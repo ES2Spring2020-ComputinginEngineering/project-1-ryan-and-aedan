@@ -29,11 +29,11 @@ while not mb.button_a.is_pressed():
     # Send the string over the radio
     ######################################################
 
-    x_accel = microbit.accelerometer.get_x()
-    y_accel = microbit.accelerometer.get_y()
-    z_accel = microbit.accelerometer.get_z()
+    x_accel = mb.accelerometer.get_x()
+    y_accel = mb.accelerometer.get_y()
+    z_accel = mb.accelerometer.get_z()
 
-    time = microbit.running_time()
+    time = mb.running_time()
 
     message = str(x_accel) + ',' + str(y_accel) + ',' + str(z_accel) + ',' + str(time)
 
