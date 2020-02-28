@@ -7,7 +7,7 @@ import radio  # Needs to be imported separately
 
 # Change the channel if other microbits are interfering. (Default=7)
 radio.on()  # Turn on radio
-radio.config(channel=7, length=100)
+radio.config(channel=20, length=100)
 
 print('Program Started')
 mb.display.show(mb.Image.HAPPY)
@@ -28,6 +28,14 @@ while not mb.button_a.is_pressed():
     # Need to format into a single string
     # Send the string over the radio
     ######################################################
+
+    x_accel = microbit.accelerometer.get_x()
+    y_accel = microbit.accelerometer.get_y()
+    z_accel = microbit.accelerometer.get_z()
+
+    time = microbit.running_time()
+
+    message = str(x_accel) + ',' + str(y_accel) + ',' + str(z_accel) + ',' + str(time)
 
     radio.send(message)
     mb.sleep(10)
