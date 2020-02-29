@@ -19,13 +19,11 @@ while not incoming == 'start':
     incoming = radio.receive()
 print('start')
 
-
 while True:
     incoming = radio.receive() # Read from radio
 
     if incoming is not None: # message was received
         mb.display.show(mb.Image.HEART, delay=100, clear=True, wait=False)
-
         #############################################################
         # FILL IN HERE
         # Incoming is string sent from logger
@@ -33,4 +31,4 @@ while True:
         #############################################################
         info = tuple(int(data) for data in incoming.split(','))
         print(info)
-        mb.sleep(10)
+        mb.sleep(50)
