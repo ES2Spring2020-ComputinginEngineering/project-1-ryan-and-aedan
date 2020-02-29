@@ -33,4 +33,4 @@ while True:
         #############################################################
         info = tuple(int(data) for data in incoming.split(','))
         print(info)
-        mb.sleep(10)
+        mb.sleep(50)
