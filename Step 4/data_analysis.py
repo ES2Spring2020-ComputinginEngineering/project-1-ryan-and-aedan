@@ -9,7 +9,7 @@ import scipy.signal as sig
 #os.chdir(r"C:\Users\hanki\OneDrive\Documents\GitHub\hw1-ryan-hankins\project-1-ryan-and-aedan\Step 3")
 os.chdir(r"C:\Users\arb28\Desktop\School\Freshman\ES 2\Homework\project-1-ryan-and-aedan\Step 3")
 
-lengthlist = ['35.6','45.4','54.5','63.9','74.3']
+lengthlist = ['74.3','63.9','54.5','45.4','35.6']
 
 for i in lengthlist:
 
@@ -39,20 +39,21 @@ for i in lengthlist:
         
     angular_pos = np.arctan(z_accel/y_accel)
         
-    fig, axes = plt.subplots(2, sharex=True)
-    
-    
-    axes[0].plot(time,y_accel)
-    axes[0].plot(time,z_accel)
-    axes[0].plot(time,x_accel)
-    axes[0].set_title("Accel")
-    axes[0].set(xlim=(2.5,60))
-    axes[1].plot(time,angular_pos)
-    axes[1].set_title("Ang Pos")
-    axes[1].set(xlim=(2.5,60))
-    fig.tight_layout()
+#    fig, axes = plt.subplots(2, sharex=True)
+#    
+#    
+#    axes[0].plot(time,y_accel)
+#    axes[0].plot(time,z_accel)
+#    axes[0].plot(time,x_accel)
+#    axes[0].set_title("Accel")
+#    axes[0].set(xlim=(2.5,60))
+#    axes[1].plot(time,angular_pos)
+#    axes[1].set_title("Ang Pos")
+#    axes[1].set(xlim=(2.5,60))
+#    fig.tight_layout()
     
     filtered_ang_pos = sig.medfilt(angular_pos)
+    
     
     #peak_array, _ = sig.find_peaks(filtered_ang_pos)
     zero_array = np.array([])
