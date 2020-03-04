@@ -39,34 +39,32 @@ for i in lengthlist:
         
     angular_pos = np.arctan(z_accel/y_accel)
         
-#    fig, axes = plt.subplots(2, sharex=True)
-#    
-#    
-#    axes[0].plot(time,y_accel)
-#    axes[0].plot(time,z_accel)
-#    axes[0].plot(time,x_accel)
-#    axes[0].set_title("Accel")
-#    axes[0].set(xlim=(2.5,60))
-#    axes[1].plot(time,angular_pos)
-#    axes[1].set_title("Ang Pos")
-#    axes[1].set(xlim=(2.5,60))
-#    fig.tight_layout()
-    
-    filtered_ang_pos = sig.medfilt(angular_pos)
+    fig, axes = plt.subplots(2, sharex=True)
     
     
-    #peak_array, _ = sig.find_peaks(filtered_ang_pos)
+    axes[0].plot(time,y_accel)
+    axes[0].plot(time,z_accel)
+    axes[0].plot(time,x_accel)
+    axes[0].set_title("Accel")
+    axes[0].set(xlim=(2.5,60))
+    axes[1].plot(time,angular_pos)
+    axes[1].set_title("Ang Pos")
+    axes[1].set(xlim=(2.5,60))
+    fig.tight_layout()
+    
+    filtered_ang_pos = sig.medfilt(angular_pos,5)
+    
+    shifted_ang_pos = filtered_ang_pos - filtered_ang_pos.mean()
+    
+
     zero_array = np.array([])
-    for i in range(len(filtered_ang_pos)-1):
-        if filtered_ang_pos[i] < 0 and filtered_ang_pos[i + 1] > 0:
+    for i in range(len(shifted_ang_pos)-1):
+        if shifted_ang_pos[i] < 0 and shifted_ang_pos[i + 1] > 0:
             zero_array = np.append(zero_array, i)
     
     period_length_arr = np.array([])
     
-#    for i in range(len(peak_array)-1):
-#        
-#        period_length_arr = np.append(period_length_arr, time[peak_array[i+1]] - time[peak_array[i]])
-#    
+  
     for i in range(len(zero_array)-1):
        
         period_length_arr = np.append(period_length_arr, time[int(zero_array[i+1])] - time[int(zero_array[i])])
