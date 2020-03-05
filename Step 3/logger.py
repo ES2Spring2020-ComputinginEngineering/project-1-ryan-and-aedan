@@ -1,5 +1,7 @@
 ##################
-# FILL IN HEADER
+# Ryan Hankins and Aedan Brown
+#Project1 Part 3 Logger/Transmitter Code
+#Time to Complete: 1 hour
 #################
 
 import microbit as mb
@@ -19,7 +21,6 @@ radio.send('start') # Send the word 'start' to start the receiver
 mb.sleep(1000)
 mb.display.show(mb.Image.HEART)  # Display Heart while logging
 
-
 # Read and send accelerometer data repeatedly until button A is pressed again
 while not mb.button_a.is_pressed():
     ######################################################
@@ -28,6 +29,8 @@ while not mb.button_a.is_pressed():
     # Need to format into a single string
     # Send the string over the radio
     ######################################################
+
+    #Every.01s, takes accelerometer data and sends a string in the form 'x,y,z,time' via a radio signal
 
     x_accel = mb.accelerometer.get_x()
     y_accel = mb.accelerometer.get_y()
@@ -39,7 +42,5 @@ while not mb.button_a.is_pressed():
 
     radio.send(message)
     mb.sleep(10)
-
-
 
 mb.display.show(mb.Image.SQUARE)  # Display Square when program ends
