@@ -1,3 +1,7 @@
+#Ryan Hankins and Aedan Brown
+#Project1 Part2 Theoretical Periods Code
+#Time to Complete: 30 minutes
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -11,13 +15,13 @@ arrlength = np.array(lengths)
 
 def length_to_period(length_array):   
 #Takes an array of pendulum lengths and returns an array of the periods 
-#for those respective lengths with the pendulum equation
+#for those respective lengths by using the pendulum equation
     return 2*np.pi*np.sqrt((length_array/100)/9.81)
 
 arrperiod = length_to_period(arrlength)
 
 def plotter(length_array,period_array):
-#Plots length vs period using the length and period arrays   
+#Plots length vs period using the length and period arrays. Has no return value   
     plt.plot(length_array,2*np.pi*np.sqrt(length_array/100)/9.81)
     plt.title("Theoretical Period vs Length") 
     plt.xlabel("Pendulum Length (cm)")
