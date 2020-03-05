@@ -48,11 +48,12 @@ for i in lengthlist: #Cycle through each length
                                #subtract the initial time from each value
         time[i] = (time[i] - time_initial)/1000 #Convert to s as well
         
-        
+
     angular_pos = np.arctan(z_accel/y_accel) #Calculate the angular position
     
     filtered_ang_pos = sig.medfilt(angular_pos,5) #Filter the angular position
     
+
     shifted_ang_pos = filtered_ang_pos - filtered_ang_pos.mean()
     #Center the angular position about zero for analysis
     #The angular position centered around negatives values for some tests
@@ -95,9 +96,11 @@ for i in lengthlist: #Cycle through each length
     periodlist.append(average_period) #Add the period length to the
                                       #period list array
     
-    fig, axes = plt.subplots(2, sharex=True, figsize=[10,10]) #Create figure with subplots
+    fig, axes = plt.subplots(2, sharex=True, figsize=[10,10]) #Create figure 
+                                                              #with subplots
     
-    axes[0].plot(time,y_accel,label = "Y Accel") #Plot accelerations, add titles and labels
+    axes[0].plot(time,y_accel,label = "Y Accel") #Plot accelerations, 
+                                                 #add titles and labels
     axes[0].plot(time,z_accel, label = "Z Accel")
     axes[0].plot(time,x_accel, label = "X Accel")
     axes[0].set_title("Acceleration vs Time")
