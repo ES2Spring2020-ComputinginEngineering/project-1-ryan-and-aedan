@@ -95,14 +95,15 @@ for i in lengthlist: #Cycle through each length
     periodlist.append(average_period) #Add the period length to the
                                       #period list array
     
-    fig, axes = plt.subplots(2, sharex=True) #Create figure with subplots
+    fig, axes = plt.subplots(2, sharex=True, figsize=[10,10]) #Create figure with subplots
     
-    axes[0].plot(time,y_accel) #Plot accelerations, add titles and labels
-    axes[0].plot(time,z_accel)
-    axes[0].plot(time,x_accel)
+    axes[0].plot(time,y_accel,label = "Y Accel") #Plot accelerations, add titles and labels
+    axes[0].plot(time,z_accel, label = "Z Accel")
+    axes[0].plot(time,x_accel, label = "X Accel")
     axes[0].set_title("Acceleration vs Time")
     axes[0].set(xlabel="Time (s)",ylabel="Acceleration (m/s^2)")
     axes[0].set(xlim=(2.5,60))
+    axes[0].legend(loc='upper right')
     
     axes[1].plot(time,angular_pos) #Plot angular positions, add titles and labels
     axes[1].set_title("Angular Position vs Time")
