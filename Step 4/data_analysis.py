@@ -21,15 +21,20 @@ os.chdir(r"C:\Users\arb28\Desktop\School\Freshman\ES 2\Homework\project-1-ryan-a
 lengthlist = [74.3,63.9,54.5,45.4,35.6]
 periodlist = []
 
-for i in lengthlist: #Cycle through each length
-
-    fin = open(str(i) + '.csv','r') #Open corresponding data file
+x_accel = np.array([]) #Create arrays for X, Y, Z accelerations and time
+y_accel = np.array([])
+z_accel = np.array([])
+time = np.array([])
     
+
+def fileprep(i):
+    
+    fin = open(str(i) + '.csv','r') #Open corresponding data file
+
     x_accel = np.array([]) #Create arrays for X, Y, Z accelerations and time
     y_accel = np.array([])
     z_accel = np.array([])
     time = np.array([])
-    
     
     
     for line in fin: #Parse the file
@@ -47,10 +52,13 @@ for i in lengthlist: #Cycle through each length
     for i in range(len(time)): #Cycle through the time array and 
                                #subtract the initial time from each value
         time[i] = (time[i] - time_initial)/1000 #Convert to s as well
-        
 
-    angular_pos = np.arctan(z_accel/y_accel) #Calculate the angular position
-    
+    return fin, x_accel, y_accel, z_accel, time
+
+
+
+def analysis(angular_pos):
+        
     filtered_ang_pos = sig.medfilt(angular_pos,5) #Filter the angular position
     
 
@@ -60,7 +68,6 @@ for i in lengthlist: #Cycle through each length
     #so centering about zero will just shift the values and make the data
     #analysis better
     
-
     zero_array = np.array([]) #Create an empty array
     
     for i in range(len(shifted_ang_pos)-1): #Cycle through the angular positions
@@ -76,15 +83,15 @@ for i in lengthlist: #Cycle through each length
   
     for i in range(len(zero_array)-1): #Cycle through the zero values
         
-        first_peak_time = (time[int(zero_array[i])] + 
+        first_zero_time = (time[int(zero_array[i])] + 
                                             time[int(zero_array[i]+1)])/2
         #Average the negative value and the positive value of the first peak
         
-        second_peak_time = (time[int(zero_array[i+1])] + 
+        second_zero_time = (time[int(zero_array[i+1])] + 
                                              time[int(zero_array[i+1]+1)])/2
         #Average the negative value and the positive value of the second peak
         
-        period_length = second_peak_time - first_peak_time
+        period_length = second_zero_time - first_zero_time
         period_length_arr = np.append(period_length_arr, period_length)
         #Calculat the time between peaks and add it to the array
    
@@ -95,6 +102,9 @@ for i in lengthlist: #Cycle through each length
     
     periodlist.append(average_period) #Add the period length to the
                                       #period list array
+
+
+def plot(time,x_accel,y_accel,z_accel,angular_pos):
     
     fig, axes = plt.subplots(2, sharex=True, figsize=[10,10]) #Create figure 
                                                               #with subplots
@@ -116,6 +126,23 @@ for i in lengthlist: #Cycle through each length
     axes[0].label_outer() #Put the labels only on the outer edges
     axes[1].label_outer()
     fig.tight_layout() #Make the organization of the graph better
+
+
+
+
+for i in lengthlist: #Cycle through each length
+    
+    fin, x_accel, y_accel, z_accel, time = fileprep(i)
+
+    angular_pos = np.arctan(z_accel/y_accel) #Calculate the angular position
+ 
+      
+
+    
+    analysis(angular_pos)
+    
+    plot(time,x_accel,y_accel,z_accel,angular_pos)
+
     
     fin.close() #Close the file
 

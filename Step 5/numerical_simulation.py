@@ -8,50 +8,117 @@ Created on Fri Mar  6 10:56:29 2020
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.signal as sig
 
-current_time = 0
-dt = 10**-2
-current_position = math.pi/4
-current_velocity = 0
-length = 1
-g = 9.81
-current_acceleration = -1*g/length*math.sin(current_position)
 
-pos_arr = np.array([current_position])
-vel_arr = np.array([current_velocity])
-accel_arr = np.array([current_acceleration])
-time_arr = np.array([current_time])
+lengthlist = [74.3,63.9,54.5,45.4,35.6]
+periodlist = []
+g = 9.81 #g in m/s^2
 
 
 
-print("Position",current_position)
-print("Velocity",current_velocity)
-print("Acceleration",current_acceleration)
-
-while current_time < 20:
+def updateSystem(cur_pos,cur_vel,cur_accel,cur_time):
     
-    next_velocity = current_velocity + current_acceleration*dt
-    next_position = current_position + current_velocity*dt
-    next_acceleration = -1*g/length*math.sin(next_position) - 0.7*current_velocity
-    next_time = current_time + dt
+    next_vel = cur_vel + cur_accel*dt
+    next_pos = cur_pos + cur_vel*dt
+    next_accel = -1*g/(length/100)*math.sin(next_pos) - 0.5*next_vel
+    next_time = cur_time + dt
     
-    current_position = next_position
-    current_velocity = next_velocity
-    current_acceleration = next_acceleration
-    current_time = next_time
+    return next_pos, next_vel, next_accel, next_time
+
+def analysis(pos_arr):
     
-    print("Position",next_position)
-    print("Velocity",next_velocity)
-    print("Acceleration",next_acceleration)
-    print("Time",next_time)
-    print("\n")
+    filtered_pos = sig.medfilt(pos_arr,5) #Filter the angular position
+    
+    
+    shifted_ang_pos = filtered_pos - filtered_pos.mean()
+    #Center the angular position about zero for analysis
+    #The angular position centered around negatives values for some tests
+    #so centering about zero will just shift the values and make the data
+    #analysis better
+    
+    
+    
+    zero_array = np.array([]) #Create an empty array
+    
+    for i in range(len(shifted_ang_pos)-1): #Cycle through the angular poss
+        
+        if shifted_ang_pos[i] < 0 and shifted_ang_pos[i + 1] > 0:
+        #If the angular pos changes from negative to positive that
+        #represents a zero point
+            zero_array = np.append(zero_array, i) #Save the index of 
+                                                  #the negative value
+    
+    period_length_arr = np.array([])
+    
+  
+    for i in range(len(zero_array)-1): #Cycle through the zero values
+        
+        first_zero_time = (time_arr[int(zero_array[i])] + 
+                                            time_arr[int(zero_array[i]+1)])/2
+        #Average the negative value and the positive value of the first peak
+        
+        second_zero_time = (time_arr[int(zero_array[i+1])] + 
+                                             time_arr[int(zero_array[i+1]+1)])/2
+        #Average the negative value and the positive value of the second peak
+        
+        period_length = second_zero_time - first_zero_time
+        period_length_arr = np.append(period_length_arr, period_length)
+        #Calculate the time between peaks and add it to the array
+   
+    average_period = period_length_arr.mean() #Find the mean period length
+    
+    
+    print(average_period)
+    
+    periodlist.append(average_period) #Add the period length to the
+                                      #period list array
+
+for i in lengthlist:
+    
+    cur_pos = math.pi/12 #current position in radians
+    cur_vel = 0 #current velocity in radians/s
+    length = i #length in cm
+    cur_time = 0 #current time in seconds
+    dt = 10**-3 #dt in seconds
+
+    cur_accel = -1*g/(length/100)*math.sin(cur_pos)
+    
+    pos_arr = np.array([cur_pos])
+    vel_arr = np.array([cur_vel])
+    accel_arr = np.array([cur_accel])
+    time_arr = np.array([cur_time])
     
 
-    pos_arr = np.append(pos_arr, current_position)
-    vel_arr = np.append(vel_arr, current_velocity)
-    accel_arr = np.append(accel_arr, current_acceleration)
-    time_arr = np.append(time_arr, current_time)
     
-plt.plot(time_arr,pos_arr)
-plt.show()
+    while cur_time < 10:
+        
+       cur_pos,cur_vel,cur_accel,cur_time = updateSystem(cur_pos,
+                                                         cur_vel,
+                                                         cur_accel,
+                                                         cur_time)
+        
+       pos_arr = np.append(pos_arr, cur_pos)
+       vel_arr = np.append(vel_arr, cur_vel)
+       accel_arr = np.append(accel_arr, cur_accel)
+       time_arr = np.append(time_arr, cur_time)
+        
+
     
+    analysis(pos_arr)
+        
+        
+    plt.plot(time_arr,pos_arr, label = "pos (rad)")
+    plt.plot(time_arr,vel_arr, label = "vel (rad/s)")
+    plt.plot(time_arr,accel_arr, label = "accel (rad/s^2)")
+    plt.suptitle("Acceleration, Velocity, Position at " + str(i) + " cm")
+    plt.xlabel("Time (s)")
+    plt.legend()
+    
+    plt.show()
+
+plt.figure(6) #Create a 6th graph (5x1 = 5)
+plt.plot(lengthlist,periodlist) #Graph period vs length
+plt.suptitle("Period vs Length") #Add titles, lables
+plt.xlabel("Length (cm)")
+plt.ylabel("Period (s)")
