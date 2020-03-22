@@ -1,8 +1,8 @@
 # Project1
 Project 1 Starter Code
 
-Names:
-Team Name:
+Names: Ryan Hankins and Aedan
+Team Name: Ryan and Aedan
 
 Your primary tasks will be to:
 
