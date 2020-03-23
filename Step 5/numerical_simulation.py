@@ -21,7 +21,7 @@ def updateSystem(cur_pos,cur_vel,cur_accel,cur_time):
     
     next_vel = cur_vel + cur_accel*dt
     next_pos = cur_pos + cur_vel*dt
-    next_accel = -1*g/(length/100)*math.sin(next_pos) - 0.5*next_vel
+    next_accel = -1*g/(length/100)*math.sin(next_pos)
     next_time = cur_time + dt
     
     return next_pos, next_vel, next_accel, next_time
@@ -91,7 +91,7 @@ for i in lengthlist:
     
 
     
-    while cur_time < 10:
+    while cur_time < 5:
         
        cur_pos,cur_vel,cur_accel,cur_time = updateSystem(cur_pos,
                                                          cur_vel,
@@ -119,6 +119,6 @@ for i in lengthlist:
 
 plt.figure(6) #Create a 6th graph (5x1 = 5)
 plt.plot(lengthlist,periodlist) #Graph period vs length
-plt.suptitle("Period vs Length") #Add titles, lables
+plt.suptitle("Period vs Length (Numerical Simulation)") #Add titles, lables
 plt.xlabel("Length (cm)")
 plt.ylabel("Period (s)")

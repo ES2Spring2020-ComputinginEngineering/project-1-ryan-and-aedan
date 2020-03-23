@@ -22,8 +22,8 @@ arrperiod = length_to_period(arrlength)
 
 def plotter(length_array,period_array):
 #Plots length vs period using the length and period arrays. Has no return value   
-    plt.plot(length_array,2*np.pi*np.sqrt(length_array/100)/9.81)
-    plt.title("Theoretical Period vs Length") 
+    plt.plot(length_array,period_array)
+    plt.title("Period vs Length (Theoretical)") 
     plt.xlabel("Pendulum Length (cm)")
     plt.ylabel("Period Length (s)")
     plt.show()

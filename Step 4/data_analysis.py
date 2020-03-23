@@ -104,23 +104,23 @@ def analysis(angular_pos):
                                       #period list array
 
 
-def plot(time,x_accel,y_accel,z_accel,angular_pos):
+def plot(time,x_accel,y_accel,z_accel,angular_pos,length):
     
-    fig, axes = plt.subplots(2, sharex=True, figsize=[10,10]) #Create figure 
+    fig, axes = plt.subplots(2, sharex=True, figsize=[10,8]) #Create figure 
                                                               #with subplots
     
     axes[0].plot(time,y_accel,label = "Y Accel") #Plot accelerations, 
                                                  #add titles and labels
     axes[0].plot(time,z_accel, label = "Z Accel")
     axes[0].plot(time,x_accel, label = "X Accel")
-    axes[0].set_title("Acceleration vs Time")
+    axes[0].set_title("Acceleration vs Time (" + str(length) + " cm)")
     axes[0].set(xlabel="Time (s)",ylabel="Acceleration (m/s^2)")
     axes[0].set(xlim=(2.5,60))
     axes[0].legend(loc='upper right')
     
     axes[1].plot(time,angular_pos) #Plot angular positions, add titles and labels
-    axes[1].set_title("Angular Position vs Time")
-    axes[1].set(xlabel="Time(s)",ylabel="Angular Position (radians)")
+    axes[1].set_title("Angular Position vs Time (" + str(length) + " cm)")
+    axes[1].set(xlabel="Time (s)",ylabel="Angular Position (radians)")
     axes[1].set(xlim=(2.5,60))
     
     axes[0].label_outer() #Put the labels only on the outer edges
@@ -141,13 +141,13 @@ for i in lengthlist: #Cycle through each length
     
     analysis(angular_pos)
     
-    plot(time,x_accel,y_accel,z_accel,angular_pos)
+    plot(time,x_accel,y_accel,z_accel,angular_pos,i)
 
     
     fin.close() #Close the file
 
 plt.figure(11) #Create a 11th graph (5x2 = 10)
 plt.plot(lengthlist,periodlist) #Graph period vs length
-plt.suptitle("Period vs Length") #Add titles, lables
+plt.suptitle("Period vs Length (Data)") #Add titles, lables
 plt.xlabel("Length (cm)")
 plt.ylabel("Period (s)")
