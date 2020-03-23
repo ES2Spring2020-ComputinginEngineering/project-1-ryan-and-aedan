@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import scipy.signal as sig
 
 #os.chdir(r"C:\Users\hanki\OneDrive\Documents\GitHub\hw1-ryan-hankins\project-1-ryan-and-aedan\Step 3")
-os.chdir(r"C:\Users\arb28\Desktop\School\Freshman\ES 2\Homework\project-1-ryan-and-aedan\Step 3")
+#os.chdir(r"C:\Users\arb28\Desktop\School\Freshman\ES 2\Homework\project-1-ryan-and-aedan\Step 3")
 
 length_list = [74.3,63.9,54.5,45.4,35.6]
 period_list = []
