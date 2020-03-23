@@ -1,4 +1,4 @@
-#Project1
+##Project 1
 Project 1 - Micro:bit Pendulum
 
 Names: Ryan Hankins and Aedan Brown
