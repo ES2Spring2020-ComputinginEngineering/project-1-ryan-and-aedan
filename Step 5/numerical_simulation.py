@@ -1,23 +1,36 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar  6 10:56:29 2020
+# PROJECT 1 --- ES2
+# Pendulum Numerical Simulation
 
-@author: arb28
-"""
+# FILL THESE COMMENTS IN
+#*****************************************
+# NAMES: Ryan Hankins and Aedan Brown
+# NUMBER OF HOURS TO COMPLETE: 2.5
+# YOUR COLLABORATION STATEMENT(s): We worked alone on this assignment
+#
+#
+#*****************************************
 
 import math
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as sig
 
-
-lengthlist = [74.3,63.9,54.5,45.4,35.6]
-periodlist = []
+length_list = [74.3,63.9,54.5,45.4,35.6]
+period_list = []
 g = 9.81 #g in m/s^2
 
 
+#FUNCTIONS---------------------------------------------------------------------
 
 def updateSystem(cur_pos,cur_vel,cur_accel,cur_time):
+    
+    #updateSystem updates the system to give a new position, velocity, and acceleration
+    #The function takes in 4 arguments
+        #cur_pos is the current position
+        #cur_vel is the current velocity
+        #cur_accel is the current acceleration
+        #cur_time is the curren time
+    #The function returns the next position, velocity, acceleration and time
     
     next_vel = cur_vel + cur_accel*dt
     next_pos = cur_pos + cur_vel*dt
@@ -27,6 +40,11 @@ def updateSystem(cur_pos,cur_vel,cur_accel,cur_time):
     return next_pos, next_vel, next_accel, next_time
 
 def analysis(pos_arr):
+    
+    #analysis analyzes the angular position to determine the peaks
+    #The function takes in 1 argument
+        #pos_arr is a array of the angular positions
+    #The function does not return any values
     
     filtered_pos = sig.medfilt(pos_arr,5) #Filter the angular position
     
@@ -49,7 +67,7 @@ def analysis(pos_arr):
             zero_array = np.append(zero_array, i) #Save the index of 
                                                   #the negative value
     
-    period_length_arr = np.array([])
+    period_arr = np.array([])
     
   
     for i in range(len(zero_array)-1): #Cycle through the zero values
@@ -62,19 +80,22 @@ def analysis(pos_arr):
                                              time_arr[int(zero_array[i+1]+1)])/2
         #Average the negative value and the positive value of the second peak
         
-        period_length = second_zero_time - first_zero_time
-        period_length_arr = np.append(period_length_arr, period_length)
+        period = second_zero_time - first_zero_time
+        period_arr = np.append(period_arr, period)
         #Calculate the time between peaks and add it to the array
    
-    average_period = period_length_arr.mean() #Find the mean period length
+    average_period = period_arr.mean() #Find the mean period length
     
     
     print(average_period)
     
-    periodlist.append(average_period) #Add the period length to the
+    period_list.append(average_period) #Add the period length to the
                                       #period list array
 
-for i in lengthlist:
+
+#MAIN--------------------------------------------------------------------------
+
+for i in length_list:
     
     cur_pos = math.pi/12 #current position in radians
     cur_vel = 0 #current velocity in radians/s
@@ -118,7 +139,7 @@ for i in lengthlist:
     plt.show()
 
 plt.figure(6) #Create a 6th graph (5x1 = 5)
-plt.plot(lengthlist,periodlist) #Graph period vs length
+plt.plot(length_list,period_list) #Graph period vs length
 plt.suptitle("Period vs Length (Numerical Simulation)") #Add titles, lables
 plt.xlabel("Length (cm)")
 plt.ylabel("Period (s)")

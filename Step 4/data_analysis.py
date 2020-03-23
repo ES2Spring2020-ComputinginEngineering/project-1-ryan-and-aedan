@@ -15,25 +15,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as sig
 
-os.chdir(r"C:\Users\hanki\OneDrive\Documents\GitHub\hw1-ryan-hankins\project-1-ryan-and-aedan\Step 3")
-#os.chdir(r"C:\Users\arb28\Desktop\School\Freshman\ES 2\Homework\project-1-ryan-and-aedan\Step 3")
+#os.chdir(r"C:\Users\hanki\OneDrive\Documents\GitHub\hw1-ryan-hankins\project-1-ryan-and-aedan\Step 3")
+os.chdir(r"C:\Users\arb28\Desktop\School\Freshman\ES 2\Homework\project-1-ryan-and-aedan\Step 3")
 
-lengthlist = [74.3,63.9,54.5,45.4,35.6]
-periodlist = []
+length_list = [74.3,63.9,54.5,45.4,35.6]
+period_list = []
 
-x_accel = np.array([]) #Create arrays for X, Y, Z accelerations and time
-y_accel = np.array([])
-z_accel = np.array([])
-time = np.array([])
+#FUNCTIONS---------------------------------------------------------------------
+  
+
+def fileprep(length):
     
-
-def fileprep(i):
+    #fileprep parses the files so that the data can be used
+    #The function takes one argument
+        #length is the length of the pendulum which corresponds to the file name
+    #The function returns the opened file, an array of the X-acceleration,
+    #Y-acceleration, Z-acceleration, and time
     
-    fin = open(str(i) + '.csv','r') #Open corresponding data file
+    fin = open(str(length) + '.csv','r') #Open corresponding data file
 
-    x_accel = np.array([]) #Create arrays for X, Y, Z accelerations and time
-    y_accel = np.array([])
-    z_accel = np.array([])
+    x_acc = np.array([]) #Create arrays for X, Y, Z accelerations and time
+    y_acc = np.array([]) #These arrays are in the scope of the function
+    z_acc = np.array([]) #and will be returned
     time = np.array([])
     
     
@@ -42,24 +45,29 @@ def fileprep(i):
         if t != ['']: #The csv files contains empty lines that should be skipped
            
             #Add the accelerations in m/s^2 and time in ms
-            x_accel = np.append(x_accel,float(t[0])*9.81/1000) 
-            y_accel = np.append(y_accel,float(t[1])*9.81/1000)
-            z_accel = np.append(z_accel,float(t[2])*9.81/1000)
+            x_acc = np.append(x_acc,float(t[0])*9.81/1000) 
+            y_acc = np.append(y_acc,float(t[1])*9.81/1000)
+            z_acc = np.append(z_acc,float(t[2])*9.81/1000)
             time = np.append(time,float(t[3]))
             
     time_initial = time[0] #Set the initial time to the first time value
     
     for i in range(len(time)): #Cycle through the time array and 
                                #subtract the initial time from each value
-        time[i] = (time[i] - time_initial)/1000 #Convert to s as well
+        time[i] = (time[i] - time_initial)/1000 #Convert to seconds as well
 
-    return fin, x_accel, y_accel, z_accel, time
+    return fin, x_acc, y_acc, z_acc, time
 
 
 
-def analysis(angular_pos):
+def analysis(ang_pos):
+    
+    #analysis analyzes the angular position to determine the peaks
+    #The function takes in 1 argument
+        #pos_arr is a array of the angular positions
+    #The function does not return any values
         
-    filtered_ang_pos = sig.medfilt(angular_pos,5) #Filter the angular position
+    filtered_ang_pos = sig.medfilt(ang_pos,5) #Filter the angular position
     
 
     shifted_ang_pos = filtered_ang_pos - filtered_ang_pos.mean()
@@ -91,8 +99,8 @@ def analysis(angular_pos):
                                              time[int(zero_array[i+1]+1)])/2
         #Average the negative value and the positive value of the second peak
         
-        period_length = second_zero_time - first_zero_time
-        period_length_arr = np.append(period_length_arr, period_length)
+        period = second_zero_time - first_zero_time
+        period_length_arr = np.append(period_length_arr, period)
         #Calculat the time between peaks and add it to the array
    
     average_period = period_length_arr.mean() #Find the mean period length
@@ -100,11 +108,21 @@ def analysis(angular_pos):
     
     print(average_period)
     
-    periodlist.append(average_period) #Add the period length to the
+    period_list.append(average_period) #Add the period length to the
                                       #period list array
 
 
 def plot(time,x_accel,y_accel,z_accel,angular_pos,length):
+    
+    #plot creates plots of the acceraltion and angular positions
+    #It takes 6 arguments
+        #time is an array of time values
+        #x_accel is an array of x-acceleration values
+        #y_accel is an array of y-acceleration values
+        #z_accel is an array of z-acceleration values
+        #angular_pos is an array of angular position values
+        #length is the length of the pendulum that the data is associated with
+    #The function has no return value
     
     fig, axes = plt.subplots(2, sharex=True, figsize=[10,8]) #Create figure 
                                                               #with subplots
@@ -129,16 +147,17 @@ def plot(time,x_accel,y_accel,z_accel,angular_pos,length):
 
 
 
+#MAIN--------------------------------------------------------------------------
 
-for i in lengthlist: #Cycle through each length
+
+for i in length_list: #Cycle through each length
     
-    fin, x_accel, y_accel, z_accel, time = fileprep(i)
+    fin, x_accel, y_accel, z_accel, time = fileprep(i) #Assign return values to
+                                                       #pass the value into
+                                                       #other functions
 
     angular_pos = np.arctan(z_accel/y_accel) #Calculate the angular position
  
-      
-
-    
     analysis(angular_pos)
     
     plot(time,x_accel,y_accel,z_accel,angular_pos,i)
@@ -147,7 +166,7 @@ for i in lengthlist: #Cycle through each length
     fin.close() #Close the file
 
 plt.figure(11) #Create a 11th graph (5x2 = 10)
-plt.plot(lengthlist,periodlist) #Graph period vs length
+plt.plot(length_list,period_list) #Graph period vs length
 plt.suptitle("Period vs Length (Data)") #Add titles, lables
 plt.xlabel("Length (cm)")
 plt.ylabel("Period (s)")
