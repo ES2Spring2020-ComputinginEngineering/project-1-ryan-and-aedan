@@ -39,11 +39,12 @@ def updateSystem(cur_pos,cur_vel,cur_accel,cur_time):
     
     return next_pos, next_vel, next_accel, next_time
 
-def analysis(pos_arr):
+def analysis(pos_arr, length):
     
     #analysis analyzes the angular position to determine the peaks
-    #The function takes in 1 argument
+    #The function takes in 2 arguments
         #pos_arr is a array of the angular positions
+        #length is the length that is being examined
     #The function does not return any values
     
     filtered_pos = sig.medfilt(pos_arr,5) #Filter the angular position
@@ -87,7 +88,7 @@ def analysis(pos_arr):
     average_period = period_arr.mean() #Find the mean period length
     
     
-    print(average_period)
+    print(str(length) + " cm Period " + str(average_period) +" sec")
     
     period_list.append(average_period) #Add the period length to the
                                       #period list array
@@ -126,7 +127,7 @@ for i in length_list:
         
 
     
-    analysis(pos_arr)
+    analysis(pos_arr,length)
         
         
     plt.plot(time_arr,pos_arr, label = "pos (rad)")

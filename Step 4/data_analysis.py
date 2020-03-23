@@ -60,11 +60,12 @@ def fileprep(length):
 
 
 
-def analysis(ang_pos):
+def analysis(ang_pos,length):
     
     #analysis analyzes the angular position to determine the peaks
-    #The function takes in 1 argument
+    #The function takes in 2 arguments
         #pos_arr is a array of the angular positions
+        #length is the length that is being analyzed
     #The function does not return any values
         
     filtered_ang_pos = sig.medfilt(ang_pos,5) #Filter the angular position
@@ -106,7 +107,7 @@ def analysis(ang_pos):
     average_period = period_length_arr.mean() #Find the mean period length
     
     
-    print(average_period)
+    print(str(length) + " cm Period: " + str(average_period) + " sec")
     
     period_list.append(average_period) #Add the period length to the
                                       #period list array
@@ -150,17 +151,18 @@ def plot(time,x_accel,y_accel,z_accel,angular_pos,length):
 #MAIN--------------------------------------------------------------------------
 
 
-for i in length_list: #Cycle through each length
+for length_index in length_list: #Cycle through each length
     
-    fin, x_accel, y_accel, z_accel, time = fileprep(i) #Assign return values to
+    fin, x_accel, y_accel, z_accel, time = fileprep(length_index) 
+                                                       #Assign return values to
                                                        #pass the value into
                                                        #other functions
 
     angular_pos = np.arctan(z_accel/y_accel) #Calculate the angular position
  
-    analysis(angular_pos)
+    analysis(angular_pos,length_index)
     
-    plot(time,x_accel,y_accel,z_accel,angular_pos,i)
+    plot(time,x_accel,y_accel,z_accel,angular_pos,length_index)
 
     
     fin.close() #Close the file

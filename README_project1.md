@@ -10,8 +10,10 @@ how a pendulum should move.
 
 step1_theortical_period.py - Clicking the run button will produce the theoretical period vs. length graph
 
-data_analysis.py - First, os.chdir() has be to used to change the directory to the Step 3 folder in the project file. This folder contains all 
-the real world data logs that will be used in the analysis code. There is already a os.chdir() line at the beginning of the code. Once it 
+logger.py/receiver.py - These files contain comments about how to use logger and reciever
+
+data_analysis.py - First, os.chdir() has to be used to change the directory to the Step 3 folder in the project file. This folder contains all 
+the real-world data logs that will be used in the analysis code. There is already a os.chdir() line at the beginning of the code. Once it 
 is changed, running the code will print the 5 periods along with the acceleration versus time and angular position versus time for the different 
 pendulum lengths.
 
